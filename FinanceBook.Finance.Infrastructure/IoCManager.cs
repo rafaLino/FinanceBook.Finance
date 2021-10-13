@@ -1,6 +1,7 @@
 ﻿using FinanceBook.Finance.Application.Queries;
 using FinanceBook.Finance.Application.Repositories;
 using FinanceBook.Finance.Infrastructure.Contexts;
+using FinanceBook.Finance.Infrastructure.Contexts.Postgres;
 using FinanceBook.Finance.Infrastructure.Queries;
 using FinanceBook.Finance.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,12 @@ namespace FinanceBook.Finance.Infrastructure
 
         public static void AddContexts(this IServiceCollection service, IConfiguration configuration)
         {
-            string connectionString = configuration.GetConnectionString("dbContext");
-            service.AddDbContext<PostgresContext>(opt => opt.UseNpgsql(connectionString));
+            string connectionString = configuration["DATABASE_URL"];
+            service.AddDbContext<PostgresContext>(opt =>
+                opt.UseNpgsql(
+                    new PostgresUriBuilder(connectionString)
+                    .Build()
+                ));
         }
     }
 }
