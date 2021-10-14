@@ -28,7 +28,7 @@ namespace FinanceBook.Finance.Infrastructure.Queries
                 .Include(g => g.Operations.Where(x => x.ReferenceDate.Month == DateTime.Now.Month))
                 .ToListAsync(cancellationToken);
 
-            if (groupEntities.Any())
+            if (!groupEntities.Any())
                 throw new AccountHasNoGroupsException(accountId);
 
             var groups = groupEntities
