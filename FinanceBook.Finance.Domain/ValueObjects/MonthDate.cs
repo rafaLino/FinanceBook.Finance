@@ -15,6 +15,10 @@ namespace FinanceBook.Finance.Domain.ValueObjects
             }
         }
 
+        public int Month { get => Convert.ToInt32(_date?.Month); }
+
+        public int Year { get => Convert.ToInt32(_date?.Year); }
+
         public MonthDate(int year, int month)
         {
             _date = new DateTime(year, month, 1);
