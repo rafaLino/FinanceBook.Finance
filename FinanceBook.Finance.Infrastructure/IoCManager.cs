@@ -12,6 +12,8 @@ namespace FinanceBook.Finance.Infrastructure
 {
     public static class IoCManager
     {
+        private const string DATABASE_URL = "DATABASE_URL";
+
         public static void AddRepositories(this IServiceCollection service)
         {
             service.AddScoped<IGroupWriteOnlyRepository, GroupRepository>();
@@ -25,7 +27,7 @@ namespace FinanceBook.Finance.Infrastructure
 
         public static void AddContexts(this IServiceCollection service, IConfiguration configuration)
         {
-            string connectionString = configuration["DATABASE_URL"];
+            string connectionString = configuration[DATABASE_URL];
             service.AddDbContext<PostgresContext>(opt =>
                 opt.UseNpgsql(
                     new PostgresUriBuilder(connectionString)
