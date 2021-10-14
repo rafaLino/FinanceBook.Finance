@@ -27,10 +27,9 @@ namespace FinanceBook.Finance.Infrastructure
 
         public static void AddContexts(this IServiceCollection service, IConfiguration configuration)
         {
-            string connectionString = configuration[DATABASE_URL];
             service.AddDbContext<PostgresContext>(opt =>
                 opt.UseNpgsql(
-                    new PostgresUriBuilder(connectionString)
+                    new PostgresUriBuilder(configuration[DATABASE_URL])
                     .Build()
                 ));
         }

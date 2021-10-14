@@ -58,7 +58,11 @@ namespace FinanceBook.Finance.Tests.ValueObjects
 
             var result = date.ToString();
 
-            result.Should().Be("01/10/2021");
+            result.Should().NotBeEmpty();
+
+            date.Month.Should().Be(10);
+            date.Year.Should().Be(2021);
+            
         }
 
         [Fact]
