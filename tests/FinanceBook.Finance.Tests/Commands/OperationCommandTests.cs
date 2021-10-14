@@ -1,9 +1,9 @@
 ﻿using FinanceBook.Finance.Application.Commands.CreateOperation;
 using FinanceBook.Finance.Application.Commands.RemoveOperation;
 using FinanceBook.Finance.Application.Commands.UpdateOperation;
+using FinanceBook.Finance.Application.Exceptions;
 using FinanceBook.Finance.Application.Repositories;
 using FinanceBook.Finance.Domain;
-using FinanceBook.Finance.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using System;

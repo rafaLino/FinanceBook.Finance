@@ -1,5 +1,5 @@
-﻿using FinanceBook.Finance.Application.Repositories;
-using FinanceBook.Finance.Domain.Exceptions;
+﻿using FinanceBook.Finance.Application.Exceptions;
+using FinanceBook.Finance.Application.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

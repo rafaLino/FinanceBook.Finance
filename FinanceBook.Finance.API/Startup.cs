@@ -1,7 +1,10 @@
+using FinanceBook.Finance.API.Filters;
 using FinanceBook.Finance.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,12 @@ namespace FinanceBook.Finance.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers().AddJsonOptions(opt =>
+            services.AddControllers(
+                options =>
+                {
+                    options.Filters.Add(new ExceptionFilter());
+                }
+                ).AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
