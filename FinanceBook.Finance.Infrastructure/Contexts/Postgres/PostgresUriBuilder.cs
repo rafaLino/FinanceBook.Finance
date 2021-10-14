@@ -9,7 +9,7 @@ namespace FinanceBook.Finance.Infrastructure.Contexts.Postgres
 {
     public class PostgresUriBuilder
     {
-        private NpgsqlConnectionStringBuilder _builder;
+        private readonly NpgsqlConnectionStringBuilder _builder;
         public PostgresUriBuilder(string connectionString)
         {
             var databaseUri = new Uri(connectionString);

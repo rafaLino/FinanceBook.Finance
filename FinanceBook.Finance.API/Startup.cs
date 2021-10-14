@@ -12,6 +12,7 @@ namespace FinanceBook.Finance.API
 {
     public class Startup
     {
+        private const string APPLICATION_ASSEMBLY_NAME = "FinanceBook.Finance.Application";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,7 +28,7 @@ namespace FinanceBook.Finance.API
             {
                 opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
-            services.AddMediatR(AppDomain.CurrentDomain.Load("FinanceBook.Finance.Application"));
+            services.AddMediatR(AppDomain.CurrentDomain.Load(APPLICATION_ASSEMBLY_NAME));
             services.AddContexts(Configuration);
             services.AddRepositories();
             services.AddSwaggerGen(c =>

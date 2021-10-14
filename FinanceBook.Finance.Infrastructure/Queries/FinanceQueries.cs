@@ -3,6 +3,7 @@ using FinanceBook.Finance.Application.Queries.Results;
 using FinanceBook.Finance.Domain;
 using FinanceBook.Finance.Domain.ValueObjects;
 using FinanceBook.Finance.Infrastructure.Contexts;
+using FinanceBook.Finance.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace FinanceBook.Finance.Infrastructure.Queries
                 .Where(group => group.AccountId == accountId)
                 .Include(g => g.Operations.Where(x => x.ReferenceDate.Month == DateTime.Now.Month))
                 .ToListAsync(cancellationToken);
+
+            if (groupEntities.Any())
+                throw new AccountHasNoGroupsException(accountId);
 
             var groups = groupEntities
                 .Select(entity =>
