@@ -18,7 +18,7 @@ namespace FinanceBook.Finance.API.Models
 
         public override string ToString()
         {
-            return $"TraceID={TraceId}, Message=StatusCode:{StatusCode} {Message} | Tag={Tag} - StackTrace={StackTrace}";
+            return $"TraceID={TraceId} Message=StatusCode:{StatusCode}, {Message} | Tag={Tag} - StackTrace={StackTrace}";
         }
     }
 }
