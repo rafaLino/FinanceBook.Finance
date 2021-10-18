@@ -27,11 +27,11 @@ namespace FinanceBook.Finance.API.Filters
                                 Message = "an unhandled error occurred!",
                                 Tag = "<UnhandledError>",
                                 StackTrace = context.Exception?.StackTrace,
-                                TraceId = context.HttpContext.TraceIdentifier
+                                TraceId = Activity.Current?.Id ?? context.HttpContext.TraceIdentifier
                             };
 
 
-            _logger.LogError(context.Exception, $"traceID={details.TraceId} - {details.Message}", details.StackTrace, details.TraceId);
+            _logger.LogError(context.Exception, details.ToString());
 
             context.HttpContext.Response.StatusCode = details.StatusCode;
             context.HttpContext.Response.ContentType = "application/json";
