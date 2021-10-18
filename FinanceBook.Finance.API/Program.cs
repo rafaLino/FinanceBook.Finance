@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace FinanceBook.Finance.API
 {
@@ -9,7 +10,8 @@ namespace FinanceBook.Finance.API
         public static void Main(string[] args)
         {
             CreateHostBuilder(args)
-                .Build().Run();
+                .Build()
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -18,6 +20,14 @@ namespace FinanceBook.Finance.API
                 {
                     configBuilder.AddEnvironmentVariables();
                 })
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    Log.Logger = new LoggerConfiguration()
+                    .ReadFrom.Configuration(hostingContext.Configuration)
+                    .CreateLogger();
+
+                })
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

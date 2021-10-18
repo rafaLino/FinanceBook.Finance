@@ -2,10 +2,10 @@
 using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
 using FinanceBook.Finance.Application.Commands.RemoveGroup;
 using FinanceBook.Finance.Application.Commands.UpdateGroup;
+using FinanceBook.Finance.Application.Exceptions;
 using FinanceBook.Finance.Application.Queries.Results;
 using FinanceBook.Finance.Application.Repositories;
 using FinanceBook.Finance.Domain;
-using FinanceBook.Finance.Domain.Exceptions;
 using FinanceBook.Finance.Domain.ValueObjects;
 using FluentAssertions;
 using Moq;

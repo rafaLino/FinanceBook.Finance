@@ -1,9 +1,9 @@
-﻿using FinanceBook.Finance.Application.Queries;
+﻿using FinanceBook.Finance.Application.Exceptions;
+using FinanceBook.Finance.Application.Queries;
 using FinanceBook.Finance.Application.Queries.Results;
 using FinanceBook.Finance.Domain;
 using FinanceBook.Finance.Domain.ValueObjects;
 using FinanceBook.Finance.Infrastructure.Contexts;
-using FinanceBook.Finance.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
