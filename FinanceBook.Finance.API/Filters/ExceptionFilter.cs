@@ -2,6 +2,8 @@
 using FinanceBook.Finance.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -9,6 +11,11 @@ namespace FinanceBook.Finance.API.Filters
 {
     public class ExceptionFilter : IAsyncExceptionFilter
     {
+        private ILogger<AppException> _logger;
+        public ExceptionFilter(ILogger<AppException> logger)
+        {
+            _logger = logger;
+        }
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             ErrorDetails details =
@@ -20,8 +27,11 @@ namespace FinanceBook.Finance.API.Filters
                                 Message = "an unhandled error occurred!",
                                 Tag = "<UnhandledError>",
                                 StackTrace = context.Exception?.StackTrace,
-                                InnerException = context.Exception?.InnerException.ToString(),
+                                TraceId = context.HttpContext.TraceIdentifier
                             };
+
+
+            _logger.LogError(context.Exception, $"traceID={details.TraceId} - {details.Message}", details.StackTrace, details.TraceId);
 
             context.HttpContext.Response.StatusCode = details.StatusCode;
             context.HttpContext.Response.ContentType = "application/json";

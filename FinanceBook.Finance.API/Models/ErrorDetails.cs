@@ -14,6 +14,11 @@ namespace FinanceBook.Finance.API.Models
         public string StackTrace { get; set; }
 
         [JsonIgnore]
-        public string InnerException { get; set; }
+        public string TraceId { get; set; }
+
+        public override string ToString()
+        {
+            return $"TraceID={TraceId}, Message=StatusCode:{StatusCode} {Message} | Tag={Tag} - StackTrace={StackTrace}";
+        }
     }
 }
