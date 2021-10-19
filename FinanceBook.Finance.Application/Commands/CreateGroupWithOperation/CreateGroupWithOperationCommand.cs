@@ -1,5 +1,4 @@
 ﻿using FinanceBook.Finance.Application.Core;
-using FinanceBook.Finance.Domain;
 using MediatR;
 using System;
 
@@ -12,7 +11,7 @@ namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
 
         public string Description { get; set; }
 
-        public Category Category { get; set; }
+        public string Category { get; set; }
 
         public decimal Amount { get; set; }
     }

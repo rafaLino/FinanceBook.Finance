@@ -30,6 +30,7 @@ namespace FinanceBook.Finance.API.Extensions
             })
              .AddJwtBearer(config =>
              {
+                 
                  config.TokenValidationParameters = new TokenValidationParameters
                  {
                      ValidateIssuer = true,
