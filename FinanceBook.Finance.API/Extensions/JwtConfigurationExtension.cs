@@ -39,8 +39,7 @@ namespace FinanceBook.Finance.API.Extensions
                      ValidateLifetime = false,
                      ValidateIssuerSigningKey = true,
                      ValidIssuer = settings.Issuer,
-                     ValidAudience = settings.Audience,
-                     IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(settings.Secret)),
+                     ValidAudience = settings.Audience
                  };
              });
 
