@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+
 namespace FinanceBook.Finance.API
 {
     public class Startup
@@ -34,7 +35,7 @@ namespace FinanceBook.Finance.API
             services.AddMediatrFluentValidation();
             services.AddContexts(Configuration);
             services.AddRepositories();
-            services.AddJwt(Configuration);
+            services.AddJwtAuthorization(Configuration);
             services.AddSwagger();
         }
 
