@@ -1,18 +1,12 @@
 using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
-using FinanceBook.Finance.Application.Behaviours;
 using FinanceBook.Finance.Infrastructure;
-using FluentValidation.AspNetCore;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 namespace FinanceBook.Finance.API
 {
     public class Startup
@@ -27,10 +21,6 @@ namespace FinanceBook.Finance.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddContexts(Configuration);
-            services.AddRepositories();
-            services.AddMediatrFluentValidation();
-
             services.AddControllers(
                 options =>
                 {
