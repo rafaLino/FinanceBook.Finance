@@ -1,5 +1,4 @@
-﻿using FinanceBook.Finance.Application.Commands.CreateGroup;
-using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
+﻿using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
 using FinanceBook.Finance.Application.Commands.RemoveGroup;
 using FinanceBook.Finance.Application.Commands.UpdateGroup;
 using FinanceBook.Finance.Application.Exceptions;
@@ -28,28 +27,6 @@ namespace FinanceBook.Finance.Tests.Commands
             _groupWriteOnlyRepository = new Mock<IGroupWriteOnlyRepository>();
             _groupReadOnlyRepository = new Mock<IGroupReadOnlyRepository>();
             _operationWriteOnlyRepository = new Mock<IOperationWriteOnlyRepository>();
-        }
-
-
-        [Fact]
-        public async Task Should_Create_Group()
-        {
-            var command = new CreateGroupCommand
-            {
-                AccountId = Guid.NewGuid(),
-                Name = "Educação",
-                Description = null,
-                Category = Category.INCOME
-            };
-
-            var _handler = new CreateGroupCommandHandler(_groupWriteOnlyRepository.Object);
-
-            _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None));
-
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            result.Should().NotBeNull();
-            result.Id.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -135,8 +112,7 @@ namespace FinanceBook.Finance.Tests.Commands
             var result = await _handler.Handle(command, CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.GroupId.Should().NotBeEmpty();
-            result.OperationId.Should().NotBeEmpty();
+            result.Result.Should().NotBeNull();
         }
 
         [Fact]

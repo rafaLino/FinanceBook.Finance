@@ -39,7 +39,7 @@ namespace FinanceBook.Finance.Tests.Commands
             var result = await _handler.Handle(command, CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.Id.Should().NotBeEmpty();
+            result.Result.Should().NotBeNull();
         }
 
         [Fact]

@@ -1,4 +1,5 @@
-﻿using FinanceBook.Finance.Application.Repositories;
+﻿using FinanceBook.Finance.Application.Core;
+using FinanceBook.Finance.Application.Repositories;
 using FinanceBook.Finance.Domain;
 using MediatR;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
 {
-    public class CreateGroupWithOperationCommandHandler : IRequestHandler<CreateGroupWithOperationCommand, CreateGroupWithOperationCommandResult>
+    public class CreateGroupWithOperationCommandHandler : IRequestHandler<CreateGroupWithOperationCommand, Response>
     {
         private readonly IGroupWriteOnlyRepository _groupWriteOnlyRepository;
         private readonly IOperationWriteOnlyRepository _operationWriteOnlyRepository;
@@ -17,7 +18,7 @@ namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
             _operationWriteOnlyRepository = operationWriteOnlyRepository;
         }
 
-        public async Task<CreateGroupWithOperationCommandResult> Handle(CreateGroupWithOperationCommand request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(CreateGroupWithOperationCommand request, CancellationToken cancellationToken)
         {
             Group group = new(request.AccountId, request.Name, request.Description, request.Category);
 
@@ -26,11 +27,11 @@ namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
             await _groupWriteOnlyRepository.SaveAsync(group, cancellationToken);
             await _operationWriteOnlyRepository.SaveAsync(operation, cancellationToken);
 
-            return new CreateGroupWithOperationCommandResult
+            return new Response(new
             {
                 GroupId = group.Id,
                 OperationId = operation.Id
-            };
+            });
         }
     }
 }
