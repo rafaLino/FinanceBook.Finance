@@ -34,7 +34,7 @@ namespace FinanceBook.Finance.API
             services.AddMediatrFluentValidation();
             services.AddContexts(Configuration);
             services.AddRepositories();
-            services.AddJwt(Configuration);
+            services.AddJwtAuthorization(Configuration);
             services.AddSwagger();
         }
 

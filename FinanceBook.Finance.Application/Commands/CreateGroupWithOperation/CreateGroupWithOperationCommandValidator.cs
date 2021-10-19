@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using FinanceBook.Finance.Domain;
+using FluentValidation;
 
 namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
 {
@@ -20,7 +21,7 @@ namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
             RuleFor(f => f.Category)
                 .NotNull()
                 .WithMessage("The category is required")
-                .IsInEnum()
+                .IsEnumName(typeof(Category), caseSensitive: false)
                 .WithMessage("The category must be expense, income or investment");
 
             RuleFor(f => f.Amount)

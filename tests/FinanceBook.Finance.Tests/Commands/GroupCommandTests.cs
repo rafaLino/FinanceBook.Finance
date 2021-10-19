@@ -100,7 +100,7 @@ namespace FinanceBook.Finance.Tests.Commands
                 AccountId = Guid.NewGuid(),
                 Name = "Educação",
                 Description = null,
-                Category = Category.INCOME,
+                Category = "Income",
                 Amount = 30
             };
 
