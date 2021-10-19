@@ -1,10 +1,11 @@
-﻿using MediatR;
+﻿using FinanceBook.Finance.Application.Core;
+using MediatR;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace FinanceBook.Finance.Application.Commands.CreateOperation
 {
-    public class CreateOperationCommand : IRequest<CreateOperationResult>
+    public class CreateOperationCommand : IRequest<Response>
     {
         /// <summary>
         /// GroupId

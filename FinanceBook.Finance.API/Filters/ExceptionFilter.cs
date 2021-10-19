@@ -24,7 +24,7 @@ namespace FinanceBook.Finance.API.Filters
                             : new ErrorDetails
                             {
                                 StatusCode = (int)HttpStatusCode.InternalServerError,
-                                Message = "an unhandled error occurred!",
+                                Message = context.Exception?.Message,
                                 Tag = "<UnhandledError>",
                                 StackTrace = context.Exception?.StackTrace,
                                 TraceId = Activity.Current?.Id ?? context.HttpContext.TraceIdentifier

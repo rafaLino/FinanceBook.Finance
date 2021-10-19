@@ -1,8 +1,12 @@
+using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
+using FinanceBook.Finance.Application.Behaviours;
 using FinanceBook.Finance.Infrastructure;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +17,7 @@ namespace FinanceBook.Finance.API
 {
     public class Startup
     {
-        private const string APPLICATION_ASSEMBLY_NAME = "FinanceBook.Finance.Application";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,19 +27,20 @@ namespace FinanceBook.Finance.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddContexts(Configuration);
+            services.AddRepositories();
+            services.AddMediatrFluentValidation();
 
             services.AddControllers(
                 options =>
                 {
+                    options.Filters.Add(typeof(ValidationFilter));
                     options.Filters.Add(typeof(ExceptionFilter));
-                }
-                ).AddJsonOptions(opt =>
-            {
-                opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-            });
-            services.AddMediatR(AppDomain.CurrentDomain.Load(APPLICATION_ASSEMBLY_NAME));
-            services.AddContexts(Configuration);
-            services.AddRepositories();
+                })
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                });
 
             services.AddSwaggerGen(c =>
             {

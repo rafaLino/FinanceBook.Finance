@@ -1,10 +1,11 @@
-﻿using FinanceBook.Finance.Domain;
+﻿using FinanceBook.Finance.Application.Core;
+using FinanceBook.Finance.Domain;
 using MediatR;
 using System;
 
 namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
 {
-    public class CreateGroupWithOperationCommand : IRequest<CreateGroupWithOperationCommandResult>
+    public class CreateGroupWithOperationCommand : IRequest<Response>
     {
         public Guid AccountId { get; set; }
         public string Name { get; set; }
