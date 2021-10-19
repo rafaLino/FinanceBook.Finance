@@ -4,13 +4,13 @@ using FinanceBook.Finance.Application.Behaviours;
 using FinanceBook.Finance.Infrastructure;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 namespace FinanceBook.Finance.API
@@ -36,16 +36,16 @@ namespace FinanceBook.Finance.API
                 {
                     options.Filters.Add(typeof(ValidationFilter));
                     options.Filters.Add(typeof(ExceptionFilter));
-                })
-                .AddJsonOptions(opt =>
-                {
-                    opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-                });
-
-            services.AddSwaggerGen(c =>
+                }
+                ).AddJsonOptions(opt =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FinanceBook.Finance.API", Version = "v1" });
+                opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
+            services.AddMediatR(AppDomain.CurrentDomain.Load(APPLICATION_ASSEMBLY_NAME));
+            services.AddContexts(Configuration);
+            services.AddRepositories();
+            services.AddJwt(Configuration);
+            services.AddSwagger();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -56,17 +56,20 @@ namespace FinanceBook.Finance.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
             }
+
             app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-            app.UseAuthorization();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints
+                .MapControllers()
+                .RequireAuthorization();
             });
         }
     }
