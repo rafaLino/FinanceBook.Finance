@@ -31,7 +31,7 @@ namespace FinanceBook.Finance.API
             {
                 opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
-            services.AddMediatR(AppDomain.CurrentDomain.Load(APPLICATION_ASSEMBLY_NAME));
+            services.AddMediatrFluentValidation();
             services.AddContexts(Configuration);
             services.AddRepositories();
             services.AddJwt(Configuration);
