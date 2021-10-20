@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using FinanceBook.Finance.Application.Core;
+using MediatR;
 using System;
 
 namespace FinanceBook.Finance.Application.Commands.UpdateOperation
 {
-    public class UpdateOperationCommand : IRequest
+    public class UpdateOperationCommand : IRequest<Response>
     {
         public Guid Id { get; set; }
 

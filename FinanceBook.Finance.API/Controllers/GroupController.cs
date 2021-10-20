@@ -1,4 +1,5 @@
-﻿using FinanceBook.Finance.API.Models;
+﻿using FinanceBook.Finance.API.Controllers.Base;
+using FinanceBook.Finance.API.Models;
 using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
 using FinanceBook.Finance.Application.Commands.RemoveGroup;
 using FinanceBook.Finance.Application.Commands.UpdateGroup;
@@ -14,7 +15,7 @@ namespace FinanceBook.Finance.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : ApiControllerBase
     {
 
         private readonly IMediator _mediator;
@@ -34,9 +35,7 @@ namespace FinanceBook.Finance.API.Controllers
                 Description = model.Description
             };
 
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
+            return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
         [HttpDelete("{id}")]
@@ -47,17 +46,13 @@ namespace FinanceBook.Finance.API.Controllers
                 Id = id
             };
 
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
+            return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
-        [HttpPost()]
-        public async Task<IActionResult> CreateGroupWithOperation([FromBody] CreateGroupWithOperationCommand command, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupWithOperationCommand command, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command, cancellationToken);
-
-            return Created(Request.Path, result);
+            return CreatedOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
     }
 }
