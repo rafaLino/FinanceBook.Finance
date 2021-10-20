@@ -5,9 +5,15 @@ using System.IO;
 
 namespace FinanceBook.Finance.API.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class SwaggerConfigurationExtension
     {
-
+        /// <summary>
+        /// swagger setup
+        /// </summary>
+        /// <param name="services"></param>
         public static void AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>

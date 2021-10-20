@@ -9,13 +9,25 @@ using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.API.Filters
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExceptionFilter : IAsyncExceptionFilter
     {
         private ILogger<AppException> _logger;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
         public ExceptionFilter(ILogger<AppException> logger)
         {
             _logger = logger;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             ErrorDetails details =
