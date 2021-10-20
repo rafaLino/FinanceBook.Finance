@@ -1,11 +1,12 @@
-﻿using FinanceBook.Finance.Application.Repositories;
+﻿using FinanceBook.Finance.Application.Core;
+using FinanceBook.Finance.Application.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.Application.Commands.RemoveGroup
 {
-    public class RemoveGroupCommandHandler : IRequestHandler<RemoveGroupCommand>
+    public class RemoveGroupCommandHandler : IRequestHandler<RemoveGroupCommand, Response>
     {
         private readonly IGroupWriteOnlyRepository _groupWriteOnlyRepository;
 
@@ -14,11 +15,11 @@ namespace FinanceBook.Finance.Application.Commands.RemoveGroup
             _groupWriteOnlyRepository = groupWriteOnlyRepository;
         }
 
-        public async Task<Unit> Handle(RemoveGroupCommand request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(RemoveGroupCommand request, CancellationToken cancellationToken)
         {
             await _groupWriteOnlyRepository.RemoveAsync(request.Id, cancellationToken);
 
-            return Unit.Value;
+            return Response.Value;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using FinanceBook.Finance.Application.Behaviours;
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -13,20 +12,14 @@ namespace FinanceBook.Finance.API.Extensions
         public static void AddMediatrFluentValidation(this IServiceCollection services)
         {
             var assembly = AppDomain.CurrentDomain.Load(APPLICATION_ASSEMBLY_NAME);
-            
+
+            AssemblyScanner
+                .FindValidatorsInAssembly(assembly)
+                .ForEach(result => services.AddSingleton(result.InterfaceType, result.ValidatorType));
+
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(FailFastRequestBehavior<,>));
 
             services.AddMediatR(assembly);
-
-            services.Configure<ApiBehaviorOptions>(opt =>
-            {
-                opt.SuppressModelStateInvalidFilter = true;
-            });
-
-            services.AddFluentValidation(setup =>
-            {
-                setup.RegisterValidatorsFromAssembly(assembly);
-            });
         }
     }
 }

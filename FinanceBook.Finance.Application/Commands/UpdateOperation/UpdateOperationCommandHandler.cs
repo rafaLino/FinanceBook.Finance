@@ -1,4 +1,5 @@
-﻿using FinanceBook.Finance.Application.Exceptions;
+﻿using FinanceBook.Finance.Application.Core;
+using FinanceBook.Finance.Application.Exceptions;
 using FinanceBook.Finance.Application.Repositories;
 using MediatR;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.Application.Commands.UpdateOperation
 {
-    public class UpdateOperationCommandHandler : IRequestHandler<UpdateOperationCommand>
+    public class UpdateOperationCommandHandler : IRequestHandler<UpdateOperationCommand, Response>
     {
         private readonly IOperationWriteOnlyRepository _operationWriteOnlyRepository;
         private readonly IOperationReadOnlyRepository _operationReadOnlyRepository;
@@ -17,7 +18,7 @@ namespace FinanceBook.Finance.Application.Commands.UpdateOperation
             _operationReadOnlyRepository = operationReadOnlyRepository;
         }
 
-        public async Task<Unit> Handle(UpdateOperationCommand request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(UpdateOperationCommand request, CancellationToken cancellationToken)
         {
             var operation = await _operationReadOnlyRepository.GetAsync(request.Id, cancellationToken);
 
@@ -28,7 +29,7 @@ namespace FinanceBook.Finance.Application.Commands.UpdateOperation
 
             await _operationWriteOnlyRepository.UpdateAsync(operation, cancellationToken);
 
-            return Unit.Value;
+            return Response.Value;
         }
     }
 }

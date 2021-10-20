@@ -1,4 +1,5 @@
-﻿using FinanceBook.Finance.API.Models;
+﻿using FinanceBook.Finance.API.Controllers.Base;
+using FinanceBook.Finance.API.Models;
 using FinanceBook.Finance.Application.Commands.CreateOperation;
 using FinanceBook.Finance.Application.Commands.RemoveOperation;
 using FinanceBook.Finance.Application.Commands.UpdateOperation;
@@ -12,7 +13,7 @@ namespace FinanceBook.Finance.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OperationController : ControllerBase
+    public class OperationController : ApiControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -24,9 +25,8 @@ namespace FinanceBook.Finance.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOperation([FromBody] CreateOperationCommand command, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            return CreatedOrBadRequest(await _mediator.Send(command, cancellationToken));
 
-            return Created(Request.Path, result);
         }
 
         [HttpPut("{id}")]
@@ -39,9 +39,7 @@ namespace FinanceBook.Finance.API.Controllers
                 Amount = model.Amount
             };
 
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
+            return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
         [HttpDelete("{id}")]
@@ -52,9 +50,7 @@ namespace FinanceBook.Finance.API.Controllers
                 Id = id
             };
 
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
+            return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
     }
 }

@@ -24,7 +24,6 @@ namespace FinanceBook.Finance.API
             services.AddControllers(
                 options =>
                 {
-                    options.Filters.Add(typeof(ValidationFilter));
                     options.Filters.Add(typeof(ExceptionFilter));
                 }
                 ).AddJsonOptions(opt =>
@@ -36,17 +35,11 @@ namespace FinanceBook.Finance.API
             services.AddRepositories();
             services.AddJwtAuthorization(Configuration);
             services.AddSwagger();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
-            }
-
             app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
@@ -55,12 +48,28 @@ namespace FinanceBook.Finance.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            if (env.IsDevelopment())
             {
-                endpoints
-                .MapControllers()
-                .RequireAuthorization();
-            });
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+            }
+            else
+            {
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints
+                    .MapControllers()
+                    .RequireAuthorization();
+                });
+            }
+
+
         }
     }
 }

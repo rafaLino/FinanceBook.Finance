@@ -1,4 +1,4 @@
-﻿using FinanceBook.Finance.API.Models;
+﻿using FinanceBook.Finance.Application.Core;
 using FinanceBook.Finance.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;

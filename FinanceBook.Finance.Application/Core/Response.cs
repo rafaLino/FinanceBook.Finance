@@ -10,8 +10,10 @@ namespace FinanceBook.Finance.Application.Core
 
         public IEnumerable<string> Errors { get; }
 
-        public bool Invalid { get => Errors.Any(); }
+        public bool Invalid => Errors.Any();
         public object Result { get; }
+
+        public static Response Value => new();
 
         public Response() => Errors = new ReadOnlyCollection<string>(_messages);
 
