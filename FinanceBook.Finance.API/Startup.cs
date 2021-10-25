@@ -1,5 +1,6 @@
 using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
+using FinanceBook.Finance.API.Models;
 using FinanceBook.Finance.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,16 +10,28 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 namespace FinanceBook.Finance.API
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Startup
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(
@@ -36,14 +49,23 @@ namespace FinanceBook.Finance.API
             services.AddJwtAuthorization(Configuration);
             services.AddSwagger();
 
+            services.SetupCors(Configuration);
+
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors(CorsSettings.PolicyName);
 
             app.UseAuthentication();
             app.UseAuthorization();

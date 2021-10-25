@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.API.Controllers
 {
+    /// <summary>
+    /// Group controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GroupController : ApiControllerBase
@@ -20,11 +23,22 @@ namespace FinanceBook.Finance.API.Controllers
 
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public GroupController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGroup(Guid id, [FromBody] UpdateGroupRequestModel model, CancellationToken cancellationToken)
         {
@@ -38,6 +52,12 @@ namespace FinanceBook.Finance.API.Controllers
             return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveGroup(Guid id, CancellationToken cancellationToken)
         {
@@ -49,6 +69,12 @@ namespace FinanceBook.Finance.API.Controllers
             return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateGroup([FromBody] CreateGroupWithOperationCommand command, CancellationToken cancellationToken)
         {
