@@ -1,5 +1,6 @@
 using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
+using FinanceBook.Finance.API.Models;
 using FinanceBook.Finance.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,6 +49,8 @@ namespace FinanceBook.Finance.API
             services.AddJwtAuthorization(Configuration);
             services.AddSwagger();
 
+            services.SetupCors(Configuration);
+
         }
 
         /// <summary>
@@ -61,6 +64,8 @@ namespace FinanceBook.Finance.API
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors(CorsSettings.PolicyName);
 
             app.UseAuthentication();
             app.UseAuthorization();
