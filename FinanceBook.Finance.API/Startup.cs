@@ -44,6 +44,7 @@ namespace FinanceBook.Finance.API
             {
                 opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
+
             services.AddMediatrFluentValidation();
             services.AddContexts(Configuration);
             services.AddRepositories();
@@ -70,6 +71,7 @@ namespace FinanceBook.Finance.API
 
             app.UseSerilogRequestLogging();
 
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseCors(CorsSettings.PolicyName);
