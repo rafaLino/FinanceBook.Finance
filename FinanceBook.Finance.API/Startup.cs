@@ -1,5 +1,6 @@
 using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
+using FinanceBook.Finance.API.Middlewares;
 using FinanceBook.Finance.API.Settings;
 using FinanceBook.Finance.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +61,13 @@ namespace FinanceBook.Finance.API
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
+            }
+
             app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
@@ -69,12 +77,7 @@ namespace FinanceBook.Finance.API
 
             app.UseAuthorization();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
-            }
+            app.UseApiKeyValidation(Configuration);
 
             app.UseEndpoints(endpoints =>
             {
