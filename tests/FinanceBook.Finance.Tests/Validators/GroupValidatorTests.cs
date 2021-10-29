@@ -1,4 +1,4 @@
-﻿using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
+﻿using FinanceBook.Finance.Application.Commands.CreateGroup;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace FinanceBook.Finance.Tests.Validators
         [Fact]
         public void Should_Invalidate_CreateGroupCommand_Given_Unknow_Category()
         {
-            var command = new CreateGroupWithOperationCommand
+            var command = new CreateGroupCommand
             {
                 AccountId = Guid.NewGuid(),
                 Name = "Educação",
@@ -22,7 +22,7 @@ namespace FinanceBook.Finance.Tests.Validators
                 Category = "xxx",
                 Amount = 30
             };
-            var validator = new CreateGroupWithOperationCommandValidator();
+            var validator = new CreateGroupCommandValidator();
 
             var result = validator.Validate(command);
 
@@ -39,7 +39,7 @@ namespace FinanceBook.Finance.Tests.Validators
         [InlineData("EXPENSE")]
         public void Should_Validate_CreateGroupCommand_Given_Valid_Categories(string category)
         {
-            var command = new CreateGroupWithOperationCommand
+            var command = new CreateGroupCommand
             {
                 AccountId = Guid.NewGuid(),
                 Name = "Educação",
@@ -47,7 +47,7 @@ namespace FinanceBook.Finance.Tests.Validators
                 Category = category,
                 Amount = 30
             };
-            var validator = new CreateGroupWithOperationCommandValidator();
+            var validator = new CreateGroupCommandValidator();
 
             var result = validator.Validate(command);
 

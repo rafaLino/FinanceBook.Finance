@@ -1,11 +1,11 @@
 ﻿using FinanceBook.Finance.Domain;
 using FluentValidation;
 
-namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
+namespace FinanceBook.Finance.Application.Commands.CreateGroup
 {
-    public class CreateGroupWithOperationCommandValidator : AbstractValidator<CreateGroupWithOperationCommand>
+    public class CreateGroupCommandValidator : AbstractValidator<CreateGroupCommand>
     {
-        public CreateGroupWithOperationCommandValidator()
+        public CreateGroupCommandValidator()
         {
             RuleFor(f => f.AccountId)
                 .NotEmpty()

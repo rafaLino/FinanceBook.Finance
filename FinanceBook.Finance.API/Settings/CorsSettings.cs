@@ -1,4 +1,4 @@
-﻿namespace FinanceBook.Finance.API.Models
+﻿namespace FinanceBook.Finance.API.Settings
 {
     /// <summary>
     /// cors settings

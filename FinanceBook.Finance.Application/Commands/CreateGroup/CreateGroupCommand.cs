@@ -2,9 +2,9 @@
 using MediatR;
 using System;
 
-namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
+namespace FinanceBook.Finance.Application.Commands.CreateGroup
 {
-    public class CreateGroupWithOperationCommand : IRequest<Response>
+    public class CreateGroupCommand : IRequest<Response>
     {
         public Guid AccountId { get; set; }
         public string Name { get; set; }

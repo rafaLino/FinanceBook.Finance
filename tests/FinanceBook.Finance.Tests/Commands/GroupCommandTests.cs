@@ -1,4 +1,5 @@
-﻿using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
+﻿using FinanceBook.Finance.Application.Commands.CreateGroup;
+using FinanceBook.Finance.Application.Commands.CreateGroupWithOperations;
 using FinanceBook.Finance.Application.Commands.RemoveGroup;
 using FinanceBook.Finance.Application.Commands.UpdateGroup;
 using FinanceBook.Finance.Application.Exceptions;
@@ -95,7 +96,7 @@ namespace FinanceBook.Finance.Tests.Commands
         [Fact]
         public async Task Should_Create_Group_With_Operation()
         {
-            var command = new CreateGroupWithOperationCommand
+            var command = new CreateGroupCommand
             {
                 AccountId = Guid.NewGuid(),
                 Name = "Educação",
@@ -104,7 +105,7 @@ namespace FinanceBook.Finance.Tests.Commands
                 Amount = 30
             };
 
-            var _handler = new CreateGroupWithOperationCommandHandler(_groupWriteOnlyRepository.Object, _operationWriteOnlyRepository.Object);
+            var _handler = new CreateGroupCommandHandler(_groupWriteOnlyRepository.Object, _operationWriteOnlyRepository.Object);
 
             _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None));
             _operationWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Operation>(), CancellationToken.None));
@@ -113,6 +114,37 @@ namespace FinanceBook.Finance.Tests.Commands
 
             result.Should().NotBeNull();
             result.Result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task Should_Create_Group_With_Many_Operations()
+        {
+            var command = new CreateGroupWithOperationsCommand
+            {
+                AccountId = Guid.NewGuid(),
+                Name = "Educação",
+                Description = null,
+                Category = "Income",
+                Operations = new List<OperationInput> {
+                    new OperationInput { Name = "curso1", Amount = 89},
+                    new OperationInput { Name = "curso2", Amount = 20},
+                    new OperationInput { Name = "curso3", Amount = 100},
+                    new OperationInput { Name = "curso4", Amount = 120.34M},
+                }
+            };
+
+            var _handler = new CreateGroupWithOperationsCommandHandler(_groupWriteOnlyRepository.Object, _operationWriteOnlyRepository.Object);
+
+            _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None));
+            _operationWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<IEnumerable<Operation>>(), CancellationToken.None));
+
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            result.Should().NotBeNull();
+            result.Result.Should().NotBeNull();
+
+            _operationWriteOnlyRepository.Verify();
+            _groupWriteOnlyRepository.Verify();
         }
 
         [Fact]

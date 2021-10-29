@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
 using System.IO;
 
 namespace FinanceBook.Finance.API.Extensions
@@ -22,35 +23,39 @@ namespace FinanceBook.Finance.API.Extensions
                 {
                     Title = "FinanceBook.Finance.API",
                     Version = "v1",
-                    Description = "Finance service"
+                    Description = "Finance service",
 
                 });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        System.Array.Empty<string>()
-                    }
-                });
+                c.OperationFilter<AddRequiredHeaderParameter>();
+
                 c.IncludeXmlComments(
                     Path.ChangeExtension(typeof(Startup).Assembly.Location, "xml"));
             });
 
         }
     }
+
+    internal class AddRequiredHeaderParameter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            if (operation.Parameters == null)
+                operation.Parameters = new List<OpenApiParameter>();
+
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Schema = new OpenApiSchema
+                {
+                    Type = "string",
+
+                },
+                In = ParameterLocation.Header,
+                Name = "X-API-KEY",
+                Required = false,
+
+            });
+        }
+    }
+
 }

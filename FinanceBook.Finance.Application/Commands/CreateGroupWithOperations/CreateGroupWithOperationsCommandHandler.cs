@@ -3,37 +3,38 @@ using FinanceBook.Finance.Application.Core.Extensions;
 using FinanceBook.Finance.Application.Repositories;
 using FinanceBook.Finance.Domain;
 using MediatR;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperation
+namespace FinanceBook.Finance.Application.Commands.CreateGroupWithOperations
 {
-    public class CreateGroupWithOperationCommandHandler : IRequestHandler<CreateGroupWithOperationCommand, Response>
+    public class CreateGroupWithOperationsCommandHandler : IRequestHandler<CreateGroupWithOperationsCommand, Response>
     {
         private readonly IGroupWriteOnlyRepository _groupWriteOnlyRepository;
         private readonly IOperationWriteOnlyRepository _operationWriteOnlyRepository;
 
-        public CreateGroupWithOperationCommandHandler(IGroupWriteOnlyRepository groupWriteOnlyRepository, IOperationWriteOnlyRepository operationWriteOnlyRepository)
+        public CreateGroupWithOperationsCommandHandler(IGroupWriteOnlyRepository groupWriteOnlyRepository, IOperationWriteOnlyRepository operationWriteOnlyRepository)
         {
             _groupWriteOnlyRepository = groupWriteOnlyRepository;
             _operationWriteOnlyRepository = operationWriteOnlyRepository;
         }
 
-        public async Task<Response> Handle(CreateGroupWithOperationCommand request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(CreateGroupWithOperationsCommand request, CancellationToken cancellationToken)
         {
             Group group = new(request.AccountId, request.Name, request.Description, request.Category.AsEnum<Category>());
-
-            Operation operation = new(group.Id, request.Name, request.Amount);
+            IEnumerable<Operation> operations = request.Operations.Select(item => new Operation(group.Id, item.Name, item.Amount));
 
             await _groupWriteOnlyRepository.SaveAsync(group, cancellationToken);
-            await _operationWriteOnlyRepository.SaveAsync(operation, cancellationToken);
+            await _operationWriteOnlyRepository.SaveAsync(operations, cancellationToken);
 
             return new Response(new
             {
                 GroupId = group.Id,
-                OperationId = operation.Id
+                OperationIds = operations.Select(x => x.Id)
             });
+
         }
     }
 }
