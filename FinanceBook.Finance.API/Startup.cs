@@ -70,7 +70,6 @@ namespace FinanceBook.Finance.API
 
             app.UseSerilogRequestLogging();
 
-            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseCors(CorsSettings.PolicyName);
