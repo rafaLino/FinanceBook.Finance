@@ -22,4 +22,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 # ENTRYPOINT ["dotnet", "FinanceBook.Finance.API.dll"]
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet FinanceBook.Finance.API.dll
+CMD ASPNETCORE_URLS=https://*:$PORT dotnet FinanceBook.Finance.API.dll
