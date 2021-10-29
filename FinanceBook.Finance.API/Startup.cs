@@ -61,12 +61,7 @@ namespace FinanceBook.Finance.API
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
-            }
+            
 
             app.UseSerilogRequestLogging();
 
@@ -78,6 +73,13 @@ namespace FinanceBook.Finance.API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
+            }
 
             app.UseEndpoints(endpoints =>
             {
