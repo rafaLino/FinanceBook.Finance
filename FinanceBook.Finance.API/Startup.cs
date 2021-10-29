@@ -1,6 +1,6 @@
 using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
-using FinanceBook.Finance.API.Models;
+using FinanceBook.Finance.API.Settings;
 using FinanceBook.Finance.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,7 +46,7 @@ namespace FinanceBook.Finance.API
             services.AddMediatrFluentValidation();
             services.AddContexts(Configuration);
             services.AddRepositories();
-            services.AddJwtAuthorization(Configuration);
+
             services.AddSwagger();
 
             services.SetupCors(Configuration);
@@ -67,7 +67,6 @@ namespace FinanceBook.Finance.API
 
             app.UseCors(CorsSettings.PolicyName);
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             if (env.IsDevelopment())
@@ -75,22 +74,12 @@ namespace FinanceBook.Finance.API
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinanceBook.Finance.API v1"));
-
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
             }
-            else
+
+            app.UseEndpoints(endpoints =>
             {
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints
-                    .MapControllers()
-                    .RequireAuthorization();
-                });
-            }
-
+                endpoints.MapControllers();
+            });
 
         }
     }
