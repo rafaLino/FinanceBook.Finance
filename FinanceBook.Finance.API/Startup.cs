@@ -77,7 +77,7 @@ namespace FinanceBook.Finance.API
 
             app.UseAuthorization();
 
-           // app.UseApiKeyValidation(Configuration);
+            app.UseApiKeyValidation(Configuration);
 
             app.UseEndpoints(endpoints =>
             {
