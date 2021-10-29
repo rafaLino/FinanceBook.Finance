@@ -1,4 +1,5 @@
-﻿using FinanceBook.Finance.Application.Core;
+﻿using FinanceBook.Finance.API.Attributes;
+using FinanceBook.Finance.Application.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
@@ -8,6 +9,7 @@ namespace FinanceBook.Finance.API.Controllers.Base
     /// <summary>
     /// Controller base for finance api project
     /// </summary>
+    [ApiKey]
     public abstract class ApiControllerBase : ControllerBase
     {
         /// <summary>

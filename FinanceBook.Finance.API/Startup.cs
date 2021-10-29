@@ -1,6 +1,5 @@
 using FinanceBook.Finance.API.Extensions;
 using FinanceBook.Finance.API.Filters;
-using FinanceBook.Finance.API.Middlewares;
 using FinanceBook.Finance.API.Settings;
 using FinanceBook.Finance.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -77,9 +76,8 @@ namespace FinanceBook.Finance.API
 
             app.UseCors(CorsSettings.PolicyName);
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseApiKeyValidation(Configuration);
 
             app.UseEndpoints(endpoints =>
             {
