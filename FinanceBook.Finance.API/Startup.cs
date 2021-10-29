@@ -61,11 +61,7 @@ namespace FinanceBook.Finance.API
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
-
             app.UseSerilogRequestLogging();
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
