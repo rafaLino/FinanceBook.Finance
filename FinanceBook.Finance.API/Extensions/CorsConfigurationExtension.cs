@@ -1,4 +1,4 @@
-﻿using FinanceBook.Finance.API.Models;
+﻿using FinanceBook.Finance.API.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
