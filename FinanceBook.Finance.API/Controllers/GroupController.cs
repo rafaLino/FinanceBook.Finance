@@ -1,6 +1,7 @@
 ﻿using FinanceBook.Finance.API.Controllers.Base;
 using FinanceBook.Finance.API.Models;
-using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
+using FinanceBook.Finance.Application.Commands.CreateGroup;
+using FinanceBook.Finance.Application.Commands.CreateGroupWithOperations;
 using FinanceBook.Finance.Application.Commands.RemoveGroup;
 using FinanceBook.Finance.Application.Commands.UpdateGroup;
 using MediatR;
@@ -76,7 +77,19 @@ namespace FinanceBook.Finance.API.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupWithOperationCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupCommand command, CancellationToken cancellationToken)
+        {
+            return CreatedOrBadRequest(await _mediator.Send(command, cancellationToken));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPost("Operations")]
+        public async Task<IActionResult> CreateGroupWithOperations([FromBody] CreateGroupWithOperationsCommand command, CancellationToken cancellationToken)
         {
             return CreatedOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
