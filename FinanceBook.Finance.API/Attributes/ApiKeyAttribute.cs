@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FinanceBook.Finance.API.Settings;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +15,7 @@ namespace FinanceBook.Finance.API.Attributes
     [AttributeUsage(validOn: AttributeTargets.Class)]
     public class ApiKeyAttribute : Attribute, IAsyncActionFilter
     {
-        private const string _apiKey = "X-API-KEY";
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -24,17 +24,18 @@ namespace FinanceBook.Finance.API.Attributes
         /// <returns></returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            ApiKeySettings settings = new();
+            configuration.GetSection(ApiKeySettings.ApiKeySectionName).Bind(settings);
             
-            if (!context.HttpContext.Request.Headers.TryGetValue(_apiKey, out var extractedApiKey))
+            if (!context.HttpContext.Request.Headers.TryGetValue(settings.Key, out var extractedApiKey))
             {
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 await context.HttpContext.Response.WriteAsJsonAsync("api key is missing");
                 return;
             }
-            var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var apiKeyValue = configuration.GetValue<string>(_apiKey);
 
-            if (!apiKeyValue.Equals(extractedApiKey))
+            if (!settings.Value.Equals(extractedApiKey))
             {
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 await context.HttpContext.Response.WriteAsJsonAsync("access denied");
