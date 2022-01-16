@@ -1,8 +1,6 @@
 # FinanceBook.Finance
 
-  Simple API to manage incomes and expenses.
-  
-  This solution uses DDD, TDD, SOLID and Microservice concepts.
+  Simple API to manage incomes and expenses.This solution uses DDD, TDD, SOLID and Microservice concepts.
 
 ## Technologies
 * .Net Core 5
@@ -13,3 +11,11 @@
 * FluentAssertion
 * Moq
 * Docker
+
+## Concepts
+* DDD
+* TDD
+* SOLID
+* Microservice
+* Value Objects
+* Fail Fast
