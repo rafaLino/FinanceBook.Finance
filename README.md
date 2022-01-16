@@ -9,6 +9,8 @@ This is a solution following principles of Clean Architecture.
 * FluentAssertion
 * Moq
 * Docker
+* Grafana Loki
+* Heroku
 
 ## Concepts
 * DDD
