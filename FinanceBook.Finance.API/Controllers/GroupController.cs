@@ -1,6 +1,7 @@
-﻿using FinanceBook.Finance.API.Models;
+﻿using FinanceBook.Finance.API.Controllers.Base;
+using FinanceBook.Finance.API.Models;
 using FinanceBook.Finance.Application.Commands.CreateGroup;
-using FinanceBook.Finance.Application.Commands.CreateGroupWithOperation;
+using FinanceBook.Finance.Application.Commands.CreateGroupWithOperations;
 using FinanceBook.Finance.Application.Commands.RemoveGroup;
 using FinanceBook.Finance.Application.Commands.UpdateGroup;
 using MediatR;
@@ -13,27 +14,32 @@ using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.API.Controllers
 {
+    /// <summary>
+    /// Group controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : ApiControllerBase
     {
 
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public GroupController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupCommand command, CancellationToken cancellationToken)
-        {
-            var result = await _mediator.Send(command, cancellationToken);
-
-            return Created(Request.Path, result);
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGroup(Guid id, [FromBody] UpdateGroupRequestModel model, CancellationToken cancellationToken)
         {
@@ -44,11 +50,15 @@ namespace FinanceBook.Finance.API.Controllers
                 Description = model.Description
             };
 
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
+            return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveGroup(Guid id, CancellationToken cancellationToken)
         {
@@ -57,17 +67,31 @@ namespace FinanceBook.Finance.API.Controllers
                 Id = id
             };
 
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
+            return OkOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
 
-        [HttpPost("operation")]
-        public async Task<IActionResult> CreateGroupWithOperation([FromBody] CreateGroupWithOperationCommand command, CancellationToken cancellationToken)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupCommand command, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            return CreatedOrBadRequest(await _mediator.Send(command, cancellationToken));
+        }
 
-            return Created(Request.Path, result);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPost("Operations")]
+        public async Task<IActionResult> CreateGroupWithOperations([FromBody] CreateGroupWithOperationsCommand command, CancellationToken cancellationToken)
+        {
+            return CreatedOrBadRequest(await _mediator.Send(command, cancellationToken));
         }
     }
 }

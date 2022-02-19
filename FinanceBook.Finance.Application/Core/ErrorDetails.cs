@@ -1,12 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FinanceBook.Finance.API.Models
+namespace FinanceBook.Finance.Application.Core
 {
     public class ErrorDetails
     {
         public int StatusCode { get; set; }
 
-        public string Message { get; set; }
+        public object Message { get; set; }
 
         public string Tag { get; set; }
 

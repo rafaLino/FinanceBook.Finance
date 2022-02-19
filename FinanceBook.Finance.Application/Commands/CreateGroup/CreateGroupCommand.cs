@@ -1,33 +1,18 @@
-﻿using FinanceBook.Finance.Domain;
+﻿using FinanceBook.Finance.Application.Core;
 using MediatR;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace FinanceBook.Finance.Application.Commands.CreateGroup
 {
-    public class CreateGroupCommand : IRequest<CreateGroupCommandResult>
+    public class CreateGroupCommand : IRequest<Response>
     {
-        /// <summary>
-        /// AccountId
-        /// </summary>
-        [Required]
         public Guid AccountId { get; set; }
-
-        /// <summary>
-        /// Name
-        /// </summary>
-        [Required]
         public string Name { get; set; }
 
-        /// <summary>
-        /// Description
-        /// </summary>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Category [INCOME, EXPENSE, INVESTMENT]
-        /// </summary>
-        [Required]
-        public Category Category { get; set; }
+        public string Category { get; set; }
+
+        public decimal Amount { get; set; }
     }
 }

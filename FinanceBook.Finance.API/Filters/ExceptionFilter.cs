@@ -1,4 +1,4 @@
-﻿using FinanceBook.Finance.API.Models;
+﻿using FinanceBook.Finance.Application.Core;
 using FinanceBook.Finance.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,13 +9,25 @@ using System.Threading.Tasks;
 
 namespace FinanceBook.Finance.API.Filters
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExceptionFilter : IAsyncExceptionFilter
     {
         private ILogger<AppException> _logger;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
         public ExceptionFilter(ILogger<AppException> logger)
         {
             _logger = logger;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             ErrorDetails details =
@@ -24,7 +36,7 @@ namespace FinanceBook.Finance.API.Filters
                             : new ErrorDetails
                             {
                                 StatusCode = (int)HttpStatusCode.InternalServerError,
-                                Message = "an unhandled error occurred!",
+                                Message = context.Exception?.Message,
                                 Tag = "<UnhandledError>",
                                 StackTrace = context.Exception?.StackTrace,
                                 TraceId = Activity.Current?.Id ?? context.HttpContext.TraceIdentifier
