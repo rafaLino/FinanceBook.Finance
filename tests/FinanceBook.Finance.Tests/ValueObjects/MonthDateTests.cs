@@ -70,7 +70,7 @@ namespace FinanceBook.Finance.Tests.ValueObjects
         {
             var date = MonthDate.Now;
             var result = date.GetHashCode();
-            result.Should().BeGreaterThan(0);
+            result.Should().BeOfType(typeof(int));
         }
 
         [Fact]
