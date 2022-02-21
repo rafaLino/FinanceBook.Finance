@@ -1,0 +1,6 @@
+{
+  "stryker-config": {
+    //"project": "FinanceBook.Finance.Application/FinanceBook.Finance.Application.csproj",
+    "project": "FinanceBook.Finance.Domain/FinanceBook.Finance.Domain.csproj"
+  }
+}

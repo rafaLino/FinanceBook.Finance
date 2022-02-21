@@ -107,10 +107,15 @@ namespace FinanceBook.Finance.Tests.Commands
 
             var _handler = new CreateGroupCommandHandler(_groupWriteOnlyRepository.Object, _operationWriteOnlyRepository.Object);
 
-            _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None));
-            _operationWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Operation>(), CancellationToken.None));
+            _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None))
+                .Verifiable();
+            _operationWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Operation>(), CancellationToken.None))
+                .Verifiable();
 
             var result = await _handler.Handle(command, CancellationToken.None);
+
+            _groupWriteOnlyRepository.Verify();
+            _operationWriteOnlyRepository.Verify();
 
             result.Should().NotBeNull();
             result.Result.Should().NotBeNull();
@@ -135,8 +140,10 @@ namespace FinanceBook.Finance.Tests.Commands
 
             var _handler = new CreateGroupWithOperationsCommandHandler(_groupWriteOnlyRepository.Object, _operationWriteOnlyRepository.Object);
 
-            _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None));
-            _operationWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<IEnumerable<Operation>>(), CancellationToken.None));
+            _groupWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<Group>(), CancellationToken.None))
+                .Verifiable();
+            _operationWriteOnlyRepository.Setup(x => x.SaveAsync(It.IsAny<IEnumerable<Operation>>(), CancellationToken.None))
+                .Verifiable();
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
